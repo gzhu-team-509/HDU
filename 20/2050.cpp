@@ -6,8 +6,17 @@
  * - 《具体数学》
  *
 **/
+#include <iostream>
+using namespace std;
 
 int main()
 {
-	
+    int c;
+    cin >> c;
+    while (c--)
+    {
+        int n;
+        cin >> n;
+        cout << 2 * n * n - n + 1 << endl;
+    }
 }
