@@ -1,14 +1,14 @@
 /**
  * 敌兵布阵
  *
- * 基于张伟昆线段树的实现
+ * 张昆玮线段树的实现
 **/
 #include <cstdio>
 #include <cstring>
 #define sfi(a) scanf("%d", &a);
-using namespace std;
+#define sfs(a) scanf("%s", a);
 
-const int LEVEL = 5;
+const int LEVEL = 17; // 树的层数
 const int INDEX = 1 << (LEVEL - 1);
 int tree[1 << (LEVEL + 1)];
 
@@ -19,20 +19,35 @@ int query(int, int);
 
 int main()
 {
-    int t; // 测试用例的数量
-    sfi(t);
+    int t; sfi(t); // 测试用例的数量
     for (int kase = 1; kase <= t; kase++)
     {
-        printf("Case %d:\n", kase);
+        // memset(tree, 0, sizeof(tree));
 
-        memset(tree, 0, sizeof(tree));
-
-        int n; // 工兵营地的数量
-        sfi(n);
+        int n; sfi(n); // 工兵营地的数量
         for (int i = 1; i <= n; i++) sfi(tree[INDEX + i]);
 
         build(); // 建树
-        show();  // 打印树
+
+        printf("Case %d:\n", kase);
+        while (true)
+        {
+            char cmd[10]; sfs(cmd);
+
+            if (cmd[0] == 'A') {
+                int i, j; sfi(i); sfi(j);
+                update(i, j);
+            }
+            if (cmd[0] == 'S') {
+                int i, j; sfi(i); sfi(j);
+                update(i, -j);
+            }
+            if (cmd[0] == 'Q') {
+                int i, j; sfi(i); sfi(j);
+                printf("%d\n", query(i - 1, j + 1));
+            }
+            if (cmd[0] == 'E') break;
+        }
     }
 }
 
@@ -61,11 +76,18 @@ void show()
 // 将节点node的值增加diff
 void update(int node, int diff)
 {
-
+    for (node += INDEX; node; node >>= 1) tree[node] += diff;
 }
 
 // 查询开区间(left, right)内元素的和
+// left, right ∈ [1, 2^N - 2]
 int query(int left, int right)
 {
-    return 0;
+    int tot = 0;
+    for (left += INDEX, right += INDEX; left ^ right ^ 1; left >>= 1, right >>= 1)
+    {
+        if (~left & 1) tot += tree[left + 1];
+        if (right & 1) tot += tree[right - 1];
+    }
+    return tot;
 }
