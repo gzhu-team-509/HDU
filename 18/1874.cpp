@@ -4,7 +4,7 @@
 #include <algorithm>
 using namespace std;
 
-const int INF = 0x3F3F3F3F; // 1,061,109,567 大于 1e9
+const int INF = 0x3F3F3F3F; // 1,061,109,567
 //! const int INF = 0x7F7F7F7F; 因为L28出现了两个INF的和，需要确保不会溢出
 
 int n, m, s, t; // 城市数量 道路数量 起始城市 终止城市
@@ -45,7 +45,7 @@ int main()
         {
             int a, b, c; scanf("%d%d%d", &a, &b, &c);
             path[a][b] = min(path[a][b], c);
-            path[b][a] = path[a][b]; // 很关键
+            path[b][a] = path[a][b]; // 关键细节
         }
 
         scanf("%d%d", &s, &t);
